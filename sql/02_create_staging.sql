@@ -1,0 +1,27 @@
+CREATE TABLE staging.GlobalSuperStore_CurrentBatch
+(
+    [Row ID]         VARCHAR(8000),
+    [Order ID]       VARCHAR(8000),
+    [Order Date]     VARCHAR(8000),
+    [Ship Date]      VARCHAR(8000),
+    [Ship Mode]      VARCHAR(8000),
+    [Customer ID]    VARCHAR(8000),
+    [Customer Name]  VARCHAR(8000),
+    [Segment]        VARCHAR(8000),
+    [City]           VARCHAR(8000),
+    [State]          VARCHAR(8000),
+    [Country]        VARCHAR(8000),
+    [Postal Code]    VARCHAR(8000),
+    [Market]         VARCHAR(8000),
+    [Region]         VARCHAR(8000),
+    [Product ID]     VARCHAR(8000),
+    [Category]       VARCHAR(8000),
+    [Sub-Category]   VARCHAR(8000),
+    [Product Name]   VARCHAR(8000),
+    [Sales]          VARCHAR(8000),
+    [Quantity]       VARCHAR(8000),
+    [Discount]       VARCHAR(8000),
+    [Profit]         VARCHAR(8000),
+    [Shipping Cost]  VARCHAR(8000),
+    [Order Priority] VARCHAR(8000)
+);
