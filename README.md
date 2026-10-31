@@ -268,4 +268,121 @@ At the beginning of a load:
 
 `audit.usp_StartLoad`
 
-creates
+creates a record with:
+
+`Status = Running`
+
+After successful processing:
+
+`audit.usp_EndLoad`
+
+updates the record to:
+
+`Status = Success`
+
+If the Copy Data activity fails:
+
+`audit.usp_FailLoad`
+
+updates the load to:
+
+`Status = Failed`
+
+The failure path was tested during development by providing an invalid source file name.
+
+## Validation
+
+Post-load validation checks include:
+
+### Fact grain validation
+
+```sql
+SELECT
+    COUNT(*) AS TotalRows,
+    COUNT(DISTINCT RowID) AS UniqueRowIDs
+FROM fact.FactSales;
+```
+
+A valid result requires:
+
+`TotalRows = UniqueRowIDs`
+
+### Duplicate detection
+
+```sql
+SELECT
+    RowID,
+    COUNT(*P BY RowID
+HAVING COUNT(*) > 1;
+```
+
+Expected result:
+
+`0 rows`
+
+Dimension mappings are also validated before fact loading to ensure that every source record resolves to the required surrogate keys.
+
+## Repository Structure
+
+```text
+fabric-global-superstore-dwh/
+│
+├── README.md
+│
+├── docs/
+│   └── pipeline.md
+│
+└── sql/
+    ├── 01_create_schemas.sql
+    ├── 02_create_staging.sql
+    ├── 03_create_dimensions.sql
+    ├── 04_create_fact_sales.sql
+    ├── 05_data_profiling.sql
+    ├── 06_initial_load.sql
+    ├── 07_create_audit.sql
+    ├── 08_create_audit_procedures.sql
+    ├── 09_create_incremental_load.sql
+    └── 10_validation.sql
+```
+
+## Key Concepts Demonstrated
+
+This project demonstrates practical implementation of:
+
+- Dimensional modeling
+- Fact table grain
+- Business and natural keys
+- Composite business keys
+- Surrogate keys
+- Star schema
+- Reusable staging tables
+- Initial data loading
+- Incremental data loading
+- Idempotent load patterns using `NOT EXISTS`
+- Dimension-to-fact surrogate key lookups
+- Role-playing date dimension
+- Stored procedures
+- Pipeline orchestration
+- Pipeline parameters and dynamic content
+- Audit logging
+- Error handling
+- Data quality validation
+
+## Future Improvements
+
+Possible extensions include:
+
+- Passing a specific `LoadID` through the complete pipeline
+- Adding source and inserted row counts to the audit table
+- Extending failure handling to every pipeline activity
+- Implementing Slowly Changing Dimensions
+- Adding CI/CD and deployment environments
+- Adding a semantic model and reporting layer
+
+## Project Status
+
+**Completed**
+
+The solution was successfully tested with an initial dataset followed by multiple incremental batches.
+
+The final implementation supports reusable, parameterized incremental loading without requiring changes to the underlying SQL procedures for each new source file.
