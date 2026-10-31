@@ -1,0 +1,11 @@
+CREATE SCHEMA staging;
+GO
+
+CREATE SCHEMA dim;
+GO
+
+CREATE SCHEMA fact;
+GO
+
+CREATE SCHEMA audit;
+GO
